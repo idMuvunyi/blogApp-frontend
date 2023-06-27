@@ -30,8 +30,6 @@ const BlogCard = () => {
       });
   }, [pageNo]);
 
-  //   console.log('posts: ', posts);
-
   return (
     <>
       {posts !== null ? (
