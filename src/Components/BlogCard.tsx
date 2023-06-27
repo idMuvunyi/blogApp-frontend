@@ -1,21 +1,26 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Pagination from './Pagination';
+
+export type PostTypes = {
+  content: any[];
+  last: boolean;
+  pageNo: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+};
 
 const BlogCard = () => {
-  type PostTypes = {
-    content: any[];
-    last: true;
-    pageNo: number;
-    pageSize: number;
-    totalElements: number;
-    totalPages: number;
-  };
-
   const [posts, setPosts] = useState<PostTypes | null>(null);
+  const [pageNo, setPageNo] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(2);
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/v1/posts')
+      .get(
+        `http://localhost:8080/api/v1/posts?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=id&sortDir=asc`
+      )
       .then((res) => {
         // Todo: dispatch to redux before viewing to the UI
         setPosts(res.data);
@@ -23,7 +28,7 @@ const BlogCard = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [pageNo]);
 
   //   console.log('posts: ', posts);
 
@@ -49,6 +54,9 @@ const BlogCard = () => {
         <div>
           <p>No post yet !</p>
         </div>
+      )}
+      {posts !== null && (
+        <Pagination pageNo={pageNo} data={posts} setPageNumber={setPageNo} />
       )}
     </>
   );
