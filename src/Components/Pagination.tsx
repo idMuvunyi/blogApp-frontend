@@ -1,7 +1,7 @@
 import React from 'react';
 import { PostTypes } from './BlogCard';
 
-const Pagination = ({ pageNo, data, setPageNumber }: any) => {
+const Pagination = ({ pageNo, post, setPageNumber }: any) => {
   return (
     <div className="max-w-2xl mx-auto">
       <nav aria-label="Page navigation example">
@@ -19,7 +19,7 @@ const Pagination = ({ pageNo, data, setPageNumber }: any) => {
               </a>
             </li>
           )}
-          {Array.from(Array(data.totalPages)).map((_, index) => (
+          {Array.from(Array(post.totalPages)).map((_, index) => (
             <li key={index}>
               <a
                 href="#"
@@ -35,7 +35,7 @@ const Pagination = ({ pageNo, data, setPageNumber }: any) => {
             </li>
           ))}
 
-          {!data.last && (
+          {!post.last && (
             <li>
               <a
                 href="#"

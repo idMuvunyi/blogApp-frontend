@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Pagination from './Pagination';
+import { Link } from 'react-router-dom';
 
 export type PostTypes = {
   content: any[];
@@ -35,7 +36,7 @@ const BlogCard = () => {
       {posts !== null ? (
         posts.content.map((post, index) => (
           <div
-            key={index}
+            key={post.id}
             className="bg-slate-100 rounded-sm m-12 sm:m-10  mb-5 p-3 pr-10 pl-5 drop-shadow-md grayscale"
           >
             <h3 className="text-slate-900 font-medium text-xl">{post.title}</h3>
@@ -44,7 +45,9 @@ const BlogCard = () => {
               type="button"
               className="rounded-md bg-orange-500 p-3 pt-1 pb-1 text-sky-700 text-xs hover:text-white mt-3"
             >
-              Read more..
+              <Link to={`posts/${post.id}`} state={post}>
+                Read more..
+              </Link>
             </button>
           </div>
         ))
@@ -54,7 +57,7 @@ const BlogCard = () => {
         </div>
       )}
       {posts !== null && (
-        <Pagination pageNo={pageNo} data={posts} setPageNumber={setPageNo} />
+        <Pagination pageNo={pageNo} post={posts} setPageNumber={setPageNo} />
       )}
     </>
   );
