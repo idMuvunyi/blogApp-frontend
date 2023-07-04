@@ -22,7 +22,7 @@ const Pagination = ({ pageNo, post, setPageNumber }: any) => {
           {Array.from(Array(post.totalPages)).map((_, index) => (
             <li key={index}>
               <a
-                href="#"
+                href=""
                 aria-current="page"
                 className={
                   pageNo === index

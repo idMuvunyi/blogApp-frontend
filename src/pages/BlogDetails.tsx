@@ -1,11 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../Components/Button';
+import axios from 'axios';
 
 const BlogDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [comment, setComment] = useState<string>('');
 
+  const handleCommentValue = (e: React.FormEvent<HTMLInputElement>) => {
+    setComment(e.currentTarget.value);
+  };
+
+  // Handler function for post comment addition
+  const handleAddComment = (e: React.FormEvent<HTMLFormElement>) => {
+    // Comment Content
+    e.preventDefault();
+    axios
+      .post(`http://localhost:8080/api/v1/posts/${state.id}/comments`, {
+        name: 'Kelvin De young',
+        email: 'kevindel@mail.com',
+        body: comment,
+      })
+      .then((res) => {
+        console.log('Comment added :', res.data);
+        setComment('');
+      })
+      .catch((err) => {
+        console.log('Error :', err);
+      });
+  };
   return (
     <div className="container">
       <div className="m-10">
@@ -29,21 +53,20 @@ const BlogDetails = () => {
           <div>
             {/* input start here */}
             <div>
-              <form className="flex items-center">
+              <form className="flex items-center" onSubmit={handleAddComment}>
                 <div className="relative w-full">
                   <input
                     type="text"
-                    className="bg-gray-20 border border-slate-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-20 border border-slate-300 text-gray-900 text-sm focus:ring-blue-300 focus:border-blue-300 block w-full pl-10 p-2.5  dark:bg-gray-200 dark:border-gray-400 dark:placeholder-gray-400 dark:focus:ring-blue-300 dark:focus:border-blue-300"
                     placeholder="Write your comment..."
+                    onChange={handleCommentValue}
                   />
                 </div>
-                {/* <button
-                  type="submit"
-                  className="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Send
-                </button> */}
-                <Button title="Post" onPress={() => {}} />
+                <Button
+                  styles="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-80"
+                  title="Comment"
+                  onPress={() => {}}
+                />
               </form>
             </div>
             {state.comments.map((comment: any, index: number) => (
